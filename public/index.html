@@ -1,11 +1,69 @@
+<!DOCTYPE html>
 <html>
-  <head>
-  <title>First Test</title>
-  </head>
-  <body>
-    <p id="root"></p>
-    <script>
-  document.getElementById("root").innerHTML = "The full URL of this page is:<br>" + window.location.href;
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Open.To</title>
+  <script>
+    window.onload = () => {
+      console.log(location.pathname.substring(1))
+      let url = location.pathname.substring(1);
+      if (!url) return;
+      console.log('url:', url);
+      if (!url.match(/^\S+:\/\//)) url = 'ab://' + url;
+      const [scheme] = url.split('://');
+      document.querySelector('#app-scheme').innerText = scheme + '://';
+      document.querySelector('#app-url').href = url;
+      document.querySelector('#origin-url').href = url;
+      document.querySelector('#origin-url').innerText = url;
+      document.querySelector('#copy-url').href = url;
+      document.querySelector('#copy-url').onclick = () => {
+        navigator.clipboard.writeText(url).then(() => {
+          alert('Url copied');
+        });
+      };
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = url;
+      document.body.append(iframe);
+    };
+  </script>
+</head>
+<body>
+  <div id="main">
+    <h1>Open.To</h1>
+    <p>The specific scheme
+      <code id="app-scheme">scheme</code>
+      url will open automatically. If nothing was happened, consider installing an app supports the uri scheme, or try:
+      <br/><a id="app-url" href="" target="_blank">Manual open</a>
+      <br/><code id="copy-url">Click me to copy url</code>
+      <br/>Click url or manual copy <a href="" id="origin-url"></a>
+    </p>
+  </div>
+  <style>
+    body{font-family:Arial;text-align:center;}
+    #main {
+      border-radius: 8px;
+      max-width: 600px;
+      margin-top: 24px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 8px;
+      box-shadow: 0 0 10px grey;
+    }
+    #main p {
+      text-align: left;
+    }
+    #main p span {
+      display: inline-block;
+    }
+    #copy-url {
+      cursor: pointer;
+      display: inline-block;
+      border-radius: 4px;
+      border: 1px solid gainsboro;
+      padding: 0 4px;
+      margin: 4px 0;
+    }
+  </style>
+</body>
 </html>
