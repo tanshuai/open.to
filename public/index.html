@@ -1,69 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Open.To</title>
-  <script>
-    window.onload = () => {
-      console.log(location.pathname.substring(1))
-      let url = location.pathname.substring(1);
-      if (!url) return;
-      console.log('url:', url);
-      if (!url.match(/^\S+:\/\//)) url = 'ab://' + url;
-      const [scheme] = url.split('://');
-      document.querySelector('#app-scheme').innerText = scheme + '://';
-      document.querySelector('#app-url').href = url;
-      document.querySelector('#origin-url').href = url;
-      document.querySelector('#origin-url').innerText = url;
-      document.querySelector('#copy-url').href = url;
-      document.querySelector('#copy-url').onclick = () => {
-        navigator.clipboard.writeText(url).then(() => {
-          alert('Url copied');
-        });
-      };
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = url;
-      document.body.append(iframe);
+<meta charset="UTF-8">
+<title>Open.To</title>
+<script>
+  window.onload = () => {
+    let url = location.pathname.substring(1);
+    if (!url) return;
+    if (!url.match(/^\S+:\/\//)) url = 'ab://' + url;
+    const [scheme] = url.split('://');
+    document.querySelector('#scheme').innerText = scheme + '://';
+    document.querySelector('#url').href = url;
+    document.querySelector('#origin').href = url;
+    document.querySelector('#origin').innerText = url;
+    document.querySelector('#copy').href = url;
+    document.querySelector('#copy').onclick = (e) => {
+      e.preventDefault();
+      navigator.clipboard.writeText(url).then(()=>alert('Url copied'));
     };
-  </script>
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.append(iframe);
+  };
+</script>
 </head>
 <body>
-  <div id="main">
-    <h1>Open.To</h1>
-    <p>The specific scheme
-      <code id="app-scheme">scheme</code>
-      url will open automatically. If nothing was happened, consider installing an app supports the uri scheme, or try:
-      <br/><a id="app-url" href="" target="_blank">Manual open</a>
-      <br/><code id="copy-url">Click me to copy url</code>
-      <br/>Click url or manual copy <a href="" id="origin-url"></a>
-    </p>
-  </div>
-  <style>
-    body{font-family:Arial;text-align:center;}
-    #main {
-      border-radius: 8px;
-      max-width: 600px;
-      margin-top: 24px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 8px;
-      box-shadow: 0 0 10px grey;
-    }
-    #main p {
-      text-align: left;
-    }
-    #main p span {
-      display: inline-block;
-    }
-    #copy-url {
-      cursor: pointer;
-      display: inline-block;
-      border-radius: 4px;
-      border: 1px solid gainsboro;
-      padding: 0 4px;
-      margin: 4px 0;
-    }
-  </style>
+<div id="main">
+  <h1>Open.To</h1>
+  <p>The specific <code id="scheme">scheme</code> uri will open automatically.
+    <br/>If nothing was happened, consider installing an app supports the uri scheme, or try:
+    <br/><a id="url" href="" target="_blank">Manual open</a>
+    <a id="copy" href="">Copy url</a>
+    <br/>Manual copy:<br/><code id="origin">ab://</code>
+  </p>
+</div>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";text-align:center;}
+  h1{font-weight: 500;}
+  #main {
+    max-width: 440px;padding: 32px;margin-top: 80px;line-height: 28px;
+    margin-left: auto;margin-right: auto;
+    border-radius: 8px;box-shadow: 0 2px 10px gainsboro;
+  }
+  a{
+    display:inline-block;margin: 8px 4px;padding: 6px 12px;
+    text-decoration:none;font-size: 18px;font-weight: 400;line-height: 24px;
+    white-space: nowrap;vertical-align: middle;
+    background-position: -1px -1px;background-size: 110% 110%;
+    background-color: #28a745;background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+    border: 1px solid rgba(27,31,35,0.2);border-radius: 0.25em;color: #fff;
+  }
+  a:hover{background-color: #269f42;background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);background-position: -.5em;border-color: rgba(27,31,35,0.5)}
+  #scheme{font-weight: 400;font-style: italic;}
+  #main p{font-weight:200;font-size: 20px;}
+  #main p span{display:inline-block;}
+  #origin {
+    display:inline-block;background:#eee;font-size: 16px;white-space: pre-wrap;word-break: break-all;
+    padding:4px 8px;border:1px solid gainsboro;border-radius:4px;margin:4px;
+  }
+</style>
 </body>
 </html>
