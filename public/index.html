@@ -18,6 +18,7 @@
       e.preventDefault();
       navigator.clipboard.writeText(url).then(()=>alert('Url copied'));
     };
+    if (url.startsWith('http')) return location.replace(url)
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     iframe.src = url;
