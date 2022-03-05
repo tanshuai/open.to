@@ -5,27 +5,25 @@
 <title>Open.To</title>
 <script>
   window.onload = () => {
+    const q = s => document.querySelector(s)
     let url = location.pathname.substring(1);
     if (!url) return;
-    if (!url.match(/^\S+:\/\//)) url = 'ab://' + url;
-    const [scheme] = url.split('://');
+    if (!url.match(/^\S+:(\/\/)?/)) url = 'ab://' + url;
     if (url.startsWith('ab:') || url.startsWith('alphabiz:')) {
       const a = document.createElement('a')
       a.id = 'about'
       a.innerText = 'About AlphaBiz'
       a.href = 'https://alpha.biz'
-      const icon = document.createElement('img')
-      icon.id = 'ab-icon'
+      const icon = new Image(16, 16)
       icon.src = '/alphabiz.png'
-      document.querySelector('#main').appendChild(icon)
-      document.querySelector('#main').appendChild(a)
+      q('#main').append(icon, a)
     }
-    document.querySelector('#scheme').innerText = scheme + '://';
-    document.querySelector('#url').href = url;
-    document.querySelector('#origin').href = url;
-    document.querySelector('#origin').innerText = url;
-    document.querySelector('#copy').href = url;
-    document.querySelector('#copy').onclick = (e) => {
+    q('#scheme').innerText = url.split(':')[0] + ':';
+    q('#url').href = url;
+    q('#origin').href = url;
+    q('#origin').innerText = url;
+    q('#copy').href = url;
+    q('#copy').onclick = (e) => {
       e.preventDefault();
       navigator.clipboard.writeText(url).then(()=>alert('Url copied'));
     };
@@ -70,9 +68,6 @@
   #origin {
     display:inline-block;background:#eee;font-size: 16px;white-space: pre-wrap;word-break: break-all;
     padding:4px 8px;border:1px solid gainsboro;border-radius:4px;margin:4px;
-  }
-  #ab-icon {
-    width: 16px; display: inline-block; margin-top: 8px;
   }
   #about {
     border: none; background: none; color: #bc90f2;padding: 0;margin:0 0 4px 4px;font-size: 14px;
